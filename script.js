@@ -163,9 +163,14 @@ const storyButton=document.getElementById('storyPlay'); if(storyButton) storyBut
   toast.textContent='Our story video can be connected here.';toast.classList.add('show');
   setTimeout(()=>toast.classList.remove('show'),2500);
 });
-const scrollTargets = document.querySelectorAll('.reveal, .benefit, .category, .product, .info-card, .principle-card, .faq-card, .story-image, .story-copy, .process, .quote-card, .newsletter, .contact-form');
+const scrollTargets = document.querySelectorAll('.reveal, .benefit, .category, .product, .info-card, .principle-card, .faq-card, .story-image, .story-copy, .process, .process-list li, .quote-card, .newsletter, .contact-form');
 scrollTargets.forEach((el) => {
   el.classList.add('reveal');
+  if (el.matches('.process-list li')) {
+    const idx = [...el.parentElement.children].indexOf(el);
+    el.style.transitionDelay = `${150 + idx * 180}ms`;
+    return;
+  }
   const siblings = el.parentElement ? [...el.parentElement.children].filter(c => c.classList && (c.classList.contains('reveal') || c.matches('.benefit, .category, .product, .info-card, .principle-card, .faq-card'))) : [];
   const idx = siblings.indexOf(el);
   if (idx > 0 && idx < 6) el.style.transitionDelay = `${idx * 70}ms`;
@@ -256,6 +261,29 @@ if (window.matchMedia('(hover: hover)').matches) {
   });
 }
 
+document.querySelectorAll('.fa-stage').forEach(stage => {
+  const items = [...stage.querySelectorAll('.fa-item')];
+  const imgs = [...stage.querySelectorAll('.fa-panel-right img')];
+
+  imgs.forEach(img => {
+    const preload = new Image();
+    preload.src = img.src;
+  });
+
+  const activate = (idx) => {
+    items.forEach((it, i) => it.classList.toggle('open', i === idx));
+    imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
+  };
+
+  items.forEach((item, idx) => {
+    item.addEventListener('mouseenter', () => activate(idx));
+    const btn = item.querySelector('.fa-row');
+    if (btn) {
+      btn.addEventListener('click', () => activate(idx));
+    }
+  });
+});
+
 document.querySelectorAll('img:not(.hero-photo img)').forEach(img => {
   if (!img.hasAttribute('loading')) img.setAttribute('loading', 'lazy');
 });
@@ -293,3 +321,26 @@ if (cf) {
     if (submitBtn) submitBtn.innerHTML = 'Send Message <span class="btn-arrow">→</span>';
   });
 }
+
+document.querySelectorAll('.fa-stage').forEach(stage => {
+  const items = [...stage.querySelectorAll('.fa-item')];
+  const imgs = [...stage.querySelectorAll('.fa-panel-right img')];
+
+  imgs.forEach(img => {
+    const preload = new Image();
+    preload.src = img.src;
+  });
+
+  const activate = (idx) => {
+    items.forEach((it, i) => it.classList.toggle('open', i === idx));
+    imgs.forEach((img, i) => img.classList.toggle('active', i === idx));
+  };
+
+  items.forEach((item, idx) => {
+    item.addEventListener('mouseenter', () => activate(idx));
+    const btn = item.querySelector('.fa-row');
+    if (btn) {
+      btn.addEventListener('click', () => activate(idx));
+    }
+  });
+});
