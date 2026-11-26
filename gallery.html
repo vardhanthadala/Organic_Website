@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gallery — Rishir Organics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="container nav">
+            <a class="logo" href="index.html">Rishir Organics</a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="story.html">Our Story</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="icon-btn" id="cartBtn" aria-label="Shopping Cart">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <a class="btn header-shop" href="shop.html">Shop Now</a>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="container page-hero">
+            <div class="kicker">Field &amp; Gaushala Journal</div>
+            <h1>From Our Farms to Your Garden</h1>
+            <p>A closer look at our sun-drying yards, vermicompost beds, partner gaushalas, and thriving terrace
+                harvests.</p>
+        </section>
+
+        <section class="container section">
+            <div class="gallery-grid" id="galleryGrid">
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-01.jpg" alt="Sun-dried cow dung manure">
+                    <figcaption>
+                        <strong>Sun-Drying Yards</strong>
+                        <span>Slow-cured desi cow dung under natural sunlight to preserve beneficial microbes.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-02.jpg" alt="Pure vermicompost beds">
+                    <figcaption>
+                        <strong>Vermicompost Beds</strong>
+                        <span>Earthworm-enriched organic matter harvested in small, aerated batches.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-03.jpg" alt="Partner gaushala pastures">
+                    <figcaption>
+                        <strong>Partner Gaushalas</strong>
+                        <span>Free-grazing indigenous cows cared for by smallholder farming families.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-04.jpg" alt="Terrace garden vegetables">
+                    <figcaption>
+                        <strong>Terrace &amp; Balcony Beds</strong>
+                        <span>Odor-free, finely sieved manure nourishing urban vegetable and flower pots.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-05.jpg" alt="Panchagavya fermentation">
+                    <figcaption>
+                        <strong>Panchagavya Fermentation</strong>
+                        <span>Traditional earthen-pot bio-liquid brewed for vigorous root and leaf growth.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-06.jpg" alt="Chemical-free soil testing">
+                    <figcaption>
+                        <strong>Zero-Residue Testing</strong>
+                        <span>Every batch is checked for moisture balance and zero synthetic additives.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-07.jpg" alt="Freshly harvested organic vegetables">
+                    <figcaption>
+                        <strong>Thriving Kitchen Gardens</strong>
+                        <span>Home growers harvesting crisp, chemical-free greens fed with aged manure.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-08.jpg" alt="Eco-friendly recyclable packaging">
+                    <figcaption>
+                        <strong>Earth-Safe Packaging</strong>
+                        <span>Moisture-locked, recyclable bags designed to keep living soil microbes active.</span>
+                    </figcaption>
+                </figure>
+                <figure class="gallery-card reveal">
+                    <img loading="lazy" src="assets/images/gal-09.jpg" alt="Lush indoor houseplants">
+                    <figcaption>
+                        <strong>Indoor Plant Vitality</strong>
+                        <span>Gentle, slow-release nutrition for indoor foliage, herbs, and balcony planters.</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+    </main>
+
+    <footer class="container">
+        <div class="footer-top">
+            <a class="logo" href="index.html">Rishir Organics</a>
+            <div class="footer-links">
+                <a href="shop.html">Shop</a>
+                <a href="story.html">Our Story</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 Rishir Organics. Direct from partner gaushalas.</span>
+            <span>Made with care for a greener tomorrow.</span>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast">Welcome</div>
+    <script src="script.js"></script>
+</body>
+
+</html>

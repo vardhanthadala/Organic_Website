@@ -1,13 +1,13 @@
 
-const menuToggle=document.getElementById('menuToggle');
-const navLinks=document.getElementById('navLinks');
-if(menuToggle && navLinks){
-  menuToggle.addEventListener('click',()=>{
+const menuToggle = document.getElementById('menuToggle');
+const navLinks = document.getElementById('navLinks');
+if (menuToggle && navLinks) {
+  menuToggle.addEventListener('click', () => {
     navLinks.classList.toggle('open');
-    menuToggle.textContent=navLinks.classList.contains('open')?'×':'☰';
+    menuToggle.textContent = navLinks.classList.contains('open') ? '×' : '☰';
   });
-  navLinks.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{
-    navLinks.classList.remove('open');menuToggle.textContent='☰';
+  navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    navLinks.classList.remove('open'); menuToggle.textContent = '☰';
   }));
 }
 
@@ -44,6 +44,7 @@ cartDrawer.innerHTML = `
   <div class="cart-footer" id="cartFooter">
     <div class="cart-total-row"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
     <button class="btn" id="checkoutBtn">Proceed to Checkout <span class="btn-arrow">→</span></button>
+    <button class="btn btn-outline" id="waOrderBtn" style="width:100%;margin-top:8px">Order via WhatsApp</button>
   </div>
 `;
 document.body.appendChild(cartOverlay);
@@ -146,26 +147,32 @@ const cartBtn = document.getElementById('cartBtn');
 if (cartBtn) cartBtn.addEventListener('click', openCart);
 
 saveAndRenderCart();
-const searchBtn=document.getElementById('searchBtn');
-if(searchBtn) searchBtn.addEventListener('click',()=>{
-  const term=prompt('Search organic products:');
-  if(term) {const found=[...document.querySelectorAll('.product')].find(p=>p.textContent.toLowerCase().includes(term.toLowerCase())); 
-    if(found){found.scrollIntoView({behavior:'smooth',block:'center'});found.style.outline='2px solid #78904f';setTimeout(()=>found.style.outline='',1800);}
-    else {toast.textContent='No matching product in this demo.';toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2200);}
+const searchBtn = document.getElementById('searchBtn');
+if (searchBtn) searchBtn.addEventListener('click', () => {
+  const term = prompt('Search organic products:');
+  if (term) {
+    const found = [...document.querySelectorAll('.product')].find(p => p.textContent.toLowerCase().includes(term.toLowerCase()));
+    if (found) { found.scrollIntoView({ behavior: 'smooth', block: 'center' }); found.style.outline = '2px solid #78904f'; setTimeout(() => found.style.outline = '', 1800); }
+    else { toast.textContent = 'No matching product in this demo.'; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2200); }
   }
 });
-const subscribeForm=document.getElementById('subscribeForm');
-if(subscribeForm) subscribeForm.addEventListener('submit',e=>{
-  e.preventDefault();toast.textContent='Thank you for subscribing!';toast.classList.add('show');
-  e.target.reset();setTimeout(()=>toast.classList.remove('show'),2600);
+const subscribeForm = document.getElementById('subscribeForm');
+if (subscribeForm) subscribeForm.addEventListener('submit', e => {
+  e.preventDefault(); toast.textContent = 'Thank you for subscribing!'; toast.classList.add('show');
+  e.target.reset(); setTimeout(() => toast.classList.remove('show'), 2600);
 });
-const storyButton=document.getElementById('storyPlay'); if(storyButton) storyButton.addEventListener('click',()=>{
-  toast.textContent='Our story video can be connected here.';toast.classList.add('show');
-  setTimeout(()=>toast.classList.remove('show'),2500);
+const storyButton = document.getElementById('storyPlay'); if (storyButton) storyButton.addEventListener('click', () => {
+  toast.textContent = 'Our story video can be connected here.'; toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
 });
 const scrollTargets = document.querySelectorAll('.reveal, .benefit, .category, .product, .info-card, .principle-card, .faq-card, .story-image, .story-copy, .process, .process-list li, .quote-card, .newsletter, .contact-form');
 scrollTargets.forEach((el) => {
   el.classList.add('reveal');
+  if (el.matches('.gallery-card')) {
+    const idx = [...el.parentElement.children].indexOf(el);
+    el.style.transitionDelay = `${(idx % 3) * 80}ms`;
+    return;
+  }
   if (el.matches('.process-list li')) {
     const idx = [...el.parentElement.children].indexOf(el);
     el.style.transitionDelay = `${150 + idx * 180}ms`;
@@ -179,12 +186,9 @@ scrollTargets.forEach((el) => {
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
+      entry.target.classList.toggle('visible', entry.isIntersecting);
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+  }, { threshold: 0.01, rootMargin: '0px' });
   scrollTargets.forEach(el => observer.observe(el));
 } else {
   scrollTargets.forEach(el => el.classList.add('visible'));
@@ -344,3 +348,110 @@ document.querySelectorAll('.fa-stage').forEach(stage => {
     }
   });
 });
+
+
+const shopFilters = document.getElementById('shopFilters');
+if (shopFilters) {
+  const products = [...document.querySelectorAll('.products .product')];
+  shopFilters.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    shopFilters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    products.forEach(p => {
+      p.hidden = filter !== 'all' && p.dataset.category !== filter;
+    });
+  });
+
+  const qv = document.createElement('div');
+  qv.className = 'qv-backdrop';
+  qv.innerHTML = `<div class="qv-modal"><button class="qv-close" aria-label="Close">×</button><img src="" alt=""><div class="qv-body"><h3 id="qvTitle"></h3><p id="qvSub" style="color:var(--muted);font-size:14px"></p><div class="qv-meta" id="qvMeta"></div><div class="qv-packs"><button class="qv-pack active" data-mult="1">Standard Pack</button><button class="qv-pack" data-mult="2">2× Value Pack</button></div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:12px"><strong id="qvPrice" style="font-size:20px"></strong><button class="btn" id="qvAdd">Add to Cart</button></div></div></div>`;
+  document.body.appendChild(qv);
+
+  let currentProd = null;
+  let mult = 1;
+  const closeQv = () => qv.classList.remove('open');
+  qv.querySelector('.qv-close').addEventListener('click', closeQv);
+  qv.addEventListener('click', (e) => { if (e.target === qv) closeQv(); });
+
+  qv.querySelectorAll('.qv-pack').forEach(pk => {
+    pk.addEventListener('click', () => {
+      qv.querySelectorAll('.qv-pack').forEach(b => b.classList.remove('active'));
+      pk.classList.add('active');
+      mult = Number(pk.dataset.mult || 1);
+      if (currentProd) qv.querySelector('#qvPrice').textContent = `₹${currentProd.basePrice * mult}`;
+    });
+  });
+
+  products.forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('[data-add]')) return;
+      const name = card.querySelector('h3').textContent.trim();
+      const sub = card.querySelector('.product-info p').textContent.trim();
+      const basePrice = parseInt(card.querySelector('.product-price').textContent.replace(/[^0-9]/g, ''), 10) || 199;
+      const img = card.querySelector('img').getAttribute('src');
+      currentProd = { name, sub, basePrice, img };
+      mult = 1;
+      qv.querySelectorAll('.qv-pack').forEach((b, i) => b.classList.toggle('active', i === 0));
+      qv.querySelector('img').src = img;
+      qv.querySelector('#qvTitle').textContent = name;
+      qv.querySelector('#qvSub').textContent = sub;
+      qv.querySelector('#qvMeta').innerHTML = `<strong>Specs:</strong> ${card.dataset.npk || '100% Organic'}<br><strong>Dosage:</strong> ${card.dataset.dosage || 'Mix into topsoil'}`;
+      qv.querySelector('#qvPrice').textContent = `₹${basePrice}`;
+      qv.classList.add('open');
+    });
+  });
+
+  qv.querySelector('#qvAdd').addEventListener('click', () => {
+    if (!currentProd) return;
+    const label = mult > 1 ? `${currentProd.name} (${mult}× Pack)` : currentProd.name;
+    const price = currentProd.basePrice * mult;
+    const existing = cartItems.find(it => it.name === label);
+    if (existing) existing.qty += 1;
+    else cartItems.push({ name: label, price, img: currentProd.img, qty: 1 });
+    saveCart();
+    renderCart();
+    closeQv();
+    openCart();
+    showToast(`Added ${label} to cart`);
+  });
+}
+
+
+document.getElementById('waOrderBtn')?.addEventListener('click', () => {
+  if (!cartItems.length) return showToast('Your cart is empty');
+  const lines = cartItems.map(it => `• ${it.name} × ${it.qty} (₹${it.price * it.qty})`);
+  const total = cartItems.reduce((s, it) => s + it.price * it.qty, 0);
+  const msg = encodeURIComponent(`Hello Rishir Organics! I'd like to order:\n${lines.join('\n')}\nTotal: ₹${total}`);
+  window.open(`https://wa.me/918639504644?text=${msg}`, '_blank', 'noopener');
+});
+
+
+document.getElementById('waOrderBtn')?.addEventListener('click', () => {
+  if (!cartItems.length) return showToast('Your cart is empty');
+  const lines = cartItems.map(it => `• ${it.name} × ${it.qty} (₹${it.price * it.qty})`);
+  const total = cartItems.reduce((s, it) => s + it.price * it.qty, 0);
+  const msg = encodeURIComponent(`Hello Rishir Organics! I'd like to order:\n${lines.join('\n')}\nTotal: ₹${total}`);
+  window.open(`https://wa.me/918639504644?text=${msg}`, '_blank', 'noopener');
+});
+
+
+const galleryGrid = document.getElementById('galleryGrid');
+if (galleryGrid) {
+  const lb = document.createElement('div');
+  lb.className = 'lightbox';
+  lb.innerHTML = '<img src="" alt="">';
+  document.body.appendChild(lb);
+  lb.addEventListener('click', () => lb.classList.remove('open'));
+  galleryGrid.querySelectorAll('.gallery-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const img = card.querySelector('img');
+      if (!img) return;
+      lb.querySelector('img').src = img.src;
+      lb.querySelector('img').alt = img.alt;
+      lb.classList.add('open');
+    });
+  });
+}
